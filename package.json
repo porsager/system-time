@@ -1,0 +1,13 @@
+{
+  "name": "set-time",
+  "version": "0.0.1",
+  "main": "index.js",
+  "author": "Rasmus Porsager",
+  "repository": "porsager/set-time",
+  "license": "WTFPL",
+  "gypfile": true,
+  "dependencies": {
+    "bindings": "^1.5.0",
+    "node-addon-api": "^1.6.2"
+  }
+}
