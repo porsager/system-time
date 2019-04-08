@@ -61,7 +61,8 @@ Napi::Value setTime(const Napi::CallbackInfo& info) {
 }
 
 Napi::Object Init(Napi::Env env, Napi::Object exports) {
-  return Napi::Function::New(env, setTime);
+  exports.Set("set", Napi::Function::New(env, setTime));
+  return exports;
 }
 
 NODE_API_MODULE(addon, Init)

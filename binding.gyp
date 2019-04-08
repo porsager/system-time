@@ -1,15 +1,15 @@
 {
   "targets": [
     {
-      "target_name": "native",
+      "target_name": "system-time",
       "cflags!": [ "-fno-exceptions" ],
       "cflags_cc!": [ "-fno-exceptions" ],
       "conditions":[
         ["OS=='linux'", {
-          "sources": [ "native_linux.cc" ]
+          "sources": [ "main_linux.cc" ]
           }],
         ["OS=='mac'", {
-          "sources": [ "native_mac.cc" ]
+          "sources": [ "main_mac.cc" ]
         }],
         ["OS=='win'", {
           "sources": [ "main_windows.cc" ]

@@ -1,8 +1,8 @@
-const set = require('./build/Release/native')
+const systemTime = require('./build/Release/system-time')
 
-module.exports = function(date) {
+module.exports.set = function(date) {
   date = new Date(date)
-  set(
+  systemTime.set(
     date.getUTCFullYear(),
     date.getUTCMonth() + 1,
     date.getUTCDay(),
