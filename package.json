@@ -1,6 +1,6 @@
 {
   "name": "system-time",
-  "version": "0.0.3",
+  "version": "0.0.6",
   "main": "index.js",
   "author": "Rasmus Porsager <rasmus@porsager.com>",
   "repository": "porsager/system-time",

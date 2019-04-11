@@ -1,6 +1,6 @@
 #include <napi.h>
 
-Napi::Value set(const Napi::CallbackInfo& info) {
+Napi::Value setTime(const Napi::CallbackInfo& info) {
   Napi::Env env = info.Env();
 
   Napi::Error::New(env, Napi::String::New(env, "Not implemented")).ThrowAsJavaScriptException();
@@ -9,7 +9,8 @@ Napi::Value set(const Napi::CallbackInfo& info) {
 }
 
 Napi::Object Init(Napi::Env env, Napi::Object exports) {
-  return Napi::Function::New(env, set);
+  exports.Set("set", Napi::Function::New(env, setTime));
+  return exports;
 }
 
 NODE_API_MODULE(addon, Init)

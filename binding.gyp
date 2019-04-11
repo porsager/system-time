@@ -9,7 +9,7 @@
           "sources": [ "main_linux.cc" ]
           }],
         ["OS=='mac'", {
-          "sources": [ "main_mac.cc" ]
+          "sources": [ "main_macos.cc" ]
         }],
         ["OS=='win'", {
           "sources": [ "main_windows.cc" ]
