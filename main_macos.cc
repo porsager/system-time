@@ -1,16 +1,12 @@
-#include <napi.h>
+#include <nan.h>
 
-Napi::Value setTime(const Napi::CallbackInfo& info) {
-  Napi::Env env = info.Env();
-
-  Napi::Error::New(env, Napi::String::New(env, "Not implemented")).ThrowAsJavaScriptException();
-
-  return env.Null();
+void setTime(const Nan::FunctionCallbackInfo<v8::Value>& info) {
+  Nan::ThrowTypeError("Not implemented");
 }
 
-Napi::Object Init(Napi::Env env, Napi::Object exports) {
-  exports.Set("set", Napi::Function::New(env, setTime));
-  return exports;
+void Init(v8::Local<v8::Object> exports) {
+  exports->Set(Nan::New("setTime").ToLocalChecked(),
+               Nan::New<v8::FunctionTemplate>(setTime)->GetFunction());
 }
 
-NODE_API_MODULE(addon, Init)
+NODE_MODULE(addon, Init)

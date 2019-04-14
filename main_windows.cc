@@ -1,9 +1,7 @@
-#include <napi.h>
+#include <nan.h>
 #include <windows.h>
 
-Napi::Value setTime(const Napi::CallbackInfo& info) {
-  Napi::Env env = info.Env();
-
+void setTime(const Nan::FunctionCallbackInfo<v8::Value>& info) {
   HANDLE hToken;
   TOKEN_PRIVILEGES tp;
   TOKEN_PRIVILEGES oldtp;
@@ -11,25 +9,25 @@ Napi::Value setTime(const Napi::CallbackInfo& info) {
   LUID luid;
 
   SYSTEMTIME st{
-    (WORD)info[0].As<Napi::Number>().Int32Value(),
-    (WORD)info[1].As<Napi::Number>().Int32Value(),
-    (WORD)info[2].As<Napi::Number>().Int32Value(),
-    (WORD)info[3].As<Napi::Number>().Int32Value(),
-    (WORD)info[4].As<Napi::Number>().Int32Value(),
-    (WORD)info[5].As<Napi::Number>().Int32Value(),
-    (WORD)info[6].As<Napi::Number>().Int32Value(),
-    (WORD)info[7].As<Napi::Number>().Int32Value()
+    (WORD)info[0]->NumberValue(),
+    (WORD)info[1]->NumberValue(),
+    (WORD)info[2]->NumberValue(),
+    (WORD)info[3]->NumberValue(),
+    (WORD)info[4]->NumberValue(),
+    (WORD)info[5]->NumberValue(),
+    (WORD)info[6]->NumberValue(),
+    (WORD)info[7]->NumberValue()
   };
 
   if (!OpenProcessToken(GetCurrentProcess(), TOKEN_ADJUST_PRIVILEGES | TOKEN_QUERY, &hToken)) {
-    Napi::Error::New(env, "Failed Calling OpenProcessToken").ThrowAsJavaScriptException();
-    return env.Null();
+    Nan::ThrowTypeError("Failed Calling OpenProcessToken");
+    return;
   }
 
   if (!LookupPrivilegeValue(NULL, SE_SYSTEMTIME_NAME, &luid)) {
-    Napi::Error::New(env, "Failed Calling LookupPrivilegeValue").ThrowAsJavaScriptException();
+    Nan::ThrowTypeError("Failed Calling LookupPrivilegeValue");
     CloseHandle(hToken);
-    return env.Null();
+    return;
   }
 
   ZeroMemory(&tp, sizeof(tp));
@@ -38,31 +36,31 @@ Napi::Value setTime(const Napi::CallbackInfo& info) {
   tp.Privileges[0].Attributes = SE_PRIVILEGE_ENABLED;
 
   if (!AdjustTokenPrivileges(hToken, FALSE, &tp, sizeof(TOKEN_PRIVILEGES), &oldtp, &dwSize)) {
-    Napi::Error::New(env, "Failed Calling AdjustTokenPrivileges").ThrowAsJavaScriptException();
+    Nan::ThrowTypeError("Failed Calling AdjustTokenPrivileges");
     CloseHandle(hToken);
-    return env.Null();
+    return;
   }
 
   if (!SetSystemTime(&st)) {
-    Napi::Error::New(env, "Failed Calling SetSystemTime").ThrowAsJavaScriptException();
+    Nan::ThrowTypeError("Failed Calling SetSystemTime");
     CloseHandle(hToken);
-    return env.Null();
+    return;
   }
 
   AdjustTokenPrivileges(hToken, FALSE, &oldtp, dwSize, NULL, NULL);
   if (GetLastError() != ERROR_SUCCESS) {
-    Napi::Error::New(env, Napi::String::New(env, "Failed Calling AdjustTokenPrivileges")).ThrowAsJavaScriptException();
+    Nan::ThrowTypeError("Failed Calling AdjustTokenPrivileges");
     CloseHandle(hToken);
-    return env.Null();
+    return;
   }
 
   CloseHandle(hToken);
-  return env.Null();
+  return;
 }
 
-Napi::Object Init(Napi::Env env, Napi::Object exports) {
-  exports.Set("set", Napi::Function::New(env, setTime));
-  return exports;
+void Init(v8::Local<v8::Object> exports) {
+  exports->Set(Nan::New("setTime").ToLocalChecked(),
+               Nan::New<v8::FunctionTemplate>(setTime)->GetFunction());
 }
 
-NODE_API_MODULE(addon, Init)
+NODE_MODULE(addon, Init)
