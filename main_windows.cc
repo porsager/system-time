@@ -11,14 +11,14 @@ void setTime(const Nan::FunctionCallbackInfo<v8::Value>& info) {
   LUID luid;
 
   SYSTEMTIME st{
-    (WORD)info[0]->NumberValue(),
-    (WORD)info[1]->NumberValue(),
-    (WORD)info[2]->NumberValue(),
-    (WORD)info[3]->NumberValue(),
-    (WORD)info[4]->NumberValue(),
-    (WORD)info[5]->NumberValue(),
-    (WORD)info[6]->NumberValue(),
-    (WORD)info[7]->NumberValue()
+    (WORD)info[0]->NumberValue(Nan::GetCurrentContext()).FromJust(),
+    (WORD)info[1]->NumberValue(Nan::GetCurrentContext()).FromJust(),
+    (WORD)info[2]->NumberValue(Nan::GetCurrentContext()).FromJust(),
+    (WORD)info[3]->NumberValue(Nan::GetCurrentContext()).FromJust(),
+    (WORD)info[4]->NumberValue(Nan::GetCurrentContext()).FromJust(),
+    (WORD)info[5]->NumberValue(Nan::GetCurrentContext()).FromJust(),
+    (WORD)info[6]->NumberValue(Nan::GetCurrentContext()).FromJust(),
+    (WORD)info[7]->NumberValue(Nan::GetCurrentContext()).FromJust()
   };
 
   if (!OpenProcessToken(GetCurrentProcess(), TOKEN_ADJUST_PRIVILEGES | TOKEN_QUERY, &hToken)) {
@@ -63,7 +63,7 @@ void setTime(const Nan::FunctionCallbackInfo<v8::Value>& info) {
 void Init(v8::Local<v8::Object> exports) {
   Local<FunctionTemplate> tpl = Nan::New<FunctionTemplate>(setTime);
   Local<Context> context = Nan::GetCurrentContext();
-  exports->Set(Nan::New("setTime").ToLocalChecked(),
+  exports->Set(context, Nan::New("setTime").ToLocalChecked(),
                tpl->GetFunction(context).ToLocalChecked());
 }
 

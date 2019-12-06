@@ -1,6 +1,6 @@
 {
   "name": "system-time",
-  "version": "0.0.9",
+  "version": "0.0.11",
   "main": "index.js",
   "author": "Rasmus Porsager <rasmus@porsager.com>",
   "repository": "porsager/system-time",
@@ -12,6 +12,6 @@
   },
   "dependencies": {
     "bindings": "^1.5.0",
-    "nan": "2.14.0"
+    "nan": "^2.14.0"
   }
 }

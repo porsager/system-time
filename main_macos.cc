@@ -10,7 +10,7 @@ void setTime(const Nan::FunctionCallbackInfo<Value>& info) {
 void Init(Local<Object> exports) {
   Local<FunctionTemplate> tpl = Nan::New<FunctionTemplate>(setTime);
   Local<Context> context = Nan::GetCurrentContext();
-  exports->Set(Nan::New("setTime").ToLocalChecked(),
+  exports->Set(context, Nan::New("setTime").ToLocalChecked(),
                tpl->GetFunction(context).ToLocalChecked());
 }
 
