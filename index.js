@@ -12,7 +12,7 @@ module.exports.setTime = function(date) {
       date.getUTCHours(),
       date.getUTCMinutes(),
       date.getUTCSeconds(),
-      date.getUTCMilliseconds(),
+      date.getUTCMilliseconds()
     )
   } else if (process.platform === 'linux') {
     systemTime.setTime(
