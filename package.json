@@ -10,6 +10,9 @@
     "build": "node-gyp rebuild",
     "clean": "node-gyp clean"
   },
+  "engines": {
+    "node": "*"
+  },
   "dependencies": {
     "bindings": "^1.5.0",
     "nan": "^2.18.0"
